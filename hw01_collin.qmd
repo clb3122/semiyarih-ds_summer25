@@ -49,14 +49,35 @@ Once you have finished and pushed your final version:
 if (!require("pacman")) install.packages("pacman")
 
 # Use pacman to install (if needed) and load the packages
-pacman::p_load(pacman, tidyverse,
-               nycflights13)
+pacman::p_load(pacman, tidyverse, nycflights13)
 ```
 
 -   Consider the data in the nycflights13 package.
 
+    ```{r}
+    ?flights
+    head(flights)
+    head(planes)
+    ```
+
 -   **Problem 2**: Is there a relationship between the age of a plane and its delays?
 
+    Plane age is available in the planes data set, so I need to join planes and flights:
+
+    ```{r}
+    library(dplyr)
+    flights_joined <- flights %>% 
+      left_join(planes, by = "tailnum")
+    head(flights_joined)
+    ```
+
+    Plot relationship between make year and departure delay:
+
+    ```{r}
+    library(ggplot2)
+    ggplot(flights_joined, aes(x = year.y, y = dep_delay)) + geom_col() #+ scale_y_discrete(breaks = (0:100))
+    ```
+
+    There appear to be more delays among newer planes rather than older ones
 
 -   **Problem 3**: Find the 10 days of the year that have the highest median departure delay, then select all flights from those 10 days.
-
