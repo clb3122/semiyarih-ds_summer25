@@ -81,3 +81,23 @@ pacman::p_load(pacman, tidyverse, nycflights13)
     There appear to be more delays among newer planes rather than older ones
 
 -   **Problem 3**: Find the 10 days of the year that have the highest median departure delay, then select all flights from those 10 days.
+
+    Create a df for the top ten delay days:
+
+    ```{r}
+    top10 <- flights %>%
+      group_by(month, day) %>%
+      summarize(med_delay = median(dep_delay, na.rm = TRUE)) %>%
+      arrange(desc(med_delay))
+    top10 <- top10 %>% 
+      head(10)
+    top10
+    ```
+
+    All flights from top 10 delay days:
+
+    ```{r}
+    top10_all <- flights %>% 
+      inner_join(top10, by = c("month", "day"))
+    top10_all
+    ```
