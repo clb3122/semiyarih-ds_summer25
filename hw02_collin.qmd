@@ -41,7 +41,15 @@ Use your function to find the answer if the number to be used for both log expre
 Also use R code to round your answer to the nearest tenth
 
 ```{r}
-
+Q2_log <- function(x, prime_num) {
+  nat_log <- log(x)
+  com_log <- log10(x)
+  cube_rt <- prime_num^(1/3)
+  unrounded <- (nat_log * com_log) / cube_rt
+  rounded <- round(unrounded, 1)
+  return(rounded)
+}
+Q2_log(32, 11)
 ```
 
 ### Question 3
