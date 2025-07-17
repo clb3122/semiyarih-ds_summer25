@@ -63,7 +63,14 @@ Use and show R coding to calculate the standard deviation for each variable of t
 -   Body – the operations performed in each iteration
 
 ```{r}
-
+sd_mtcars <- vector("double", ncol(mtcars))
+names(sd_mtcars) <- names(mtcars)
+column_names <- names(mtcars)
+for (i in seq_along(column_names)) {
+  sd_mtcars[i] <- sd(mtcars[[column_names[i]]])
+  return(sd_mtcars)
+}
+sd_mtcars
 ```
 
 ### Question 4:
