@@ -70,7 +70,9 @@ Use and show R coding to calculate the standard deviation for each variable of t
 
 Write only one line of the code to return only the leap years for years 2024, 3021, 2000 or 1800, 800, 5050, 600 and 7156. using subsetting with `[]` and without using built-in functions.
 
-```{}
+```{r}
+years <- c(2024, 3021, 2000, 1800, 800, 5050, 600, 7156)
+years[years %% 4 == 0 & (years %% 100 != 0 | years %% 400 == 0)]
 ```
 
 ## Advanced Date Manipulation with lubridate
