@@ -1,0 +1,22 @@
+library(tidyverse)
+library(tidytext)
+library(janeaustenr)
+library(textdata)
+library(wordcloud)
+
+# data preperation: groub by book, chapter, and line number
+jane_austen <- austen_books() |>
+  group_by(book) |>
+  mutate(
+    linenumber = row_number(),
+    chapter = cumsum(str_detect(
+      text,
+      regex("^chapter [\\divxlc]",
+            ignore_case = TRUE
+      )
+    )),
+    .before = text
+  ) |>
+  ungroup() |>
+  select(book, chapter, linenumber, text)
+head(jane_austen)
