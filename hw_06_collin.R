@@ -53,3 +53,24 @@ wordcloud(
   words = nrc_counts$word,
   freq = nrc_counts$n)e book "Emma"
 
+# AFINN positive sentiment analysis
+afinn_pos_words <- tidy_emma |>
+  inner_join(get_sentiments("afinn") |> filter(value >= 1), by = "word")
+
+afinn_counts <- afinn_pos_words |>
+  count(word, sort = TRUE) |>
+  filter(n > 50)
+
+# AFINN bar chart
+afinn_bar <- ggplot(afinn_counts, aes(x = reorder(word, n), y = n)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Most Frequent Positive Words in Emma (AFINN)",
+    x = "Word",
+    y = "Frequency")
+
+# AFINN wordcloud
+wordcloud(
+  words = afinn_counts$word,
+  freq = afinn_counts$n)
