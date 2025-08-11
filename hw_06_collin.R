@@ -31,7 +31,9 @@ tidy_austen |>
   count(word, sort = TRUE)
 
 tidy_emma <- tidy_austen |>
-  filter(book == "Emma") #filter for words only in th# NRC joy sentiment analysis 
+  filter(book == "Emma") 
+
+#filter for words only in th# NRC joy sentiment analysis 
 nrc_joy_words <- tidy_emma |>
   inner_join(get_sentiments("nrc") |> filter(sentiment == "joy"), by = "word")
 
@@ -74,3 +76,25 @@ afinn_bar <- ggplot(afinn_counts, aes(x = reorder(word, n), y = n)) +
 wordcloud(
   words = afinn_counts$word,
   freq = afinn_counts$n)
+
+# Bing positive sentiment analysis
+bing_pos_words <- tidy_emma |>
+  inner_join(get_sentiments("bing") |> filter(sentiment == "positive"), by = "word")
+
+bing_counts <- bing_pos_words |>
+  count(word, sort = TRUE) |>
+  filter(n > 50)
+
+# Bing bar chart
+bing_bar <- ggplot(bing_counts, aes(x = reorder(word, n), y = n)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Most Frequent Positive Words in Emma (Bing)",
+    x = "Word",
+    y = "Frequency")
+
+# Bing word cloud
+wordcloud(
+  words = bing_counts$word,
+  freq = bing_counts$n)
