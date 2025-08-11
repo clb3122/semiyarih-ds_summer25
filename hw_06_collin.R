@@ -31,4 +31,25 @@ tidy_austen |>
   count(word, sort = TRUE)
 
 tidy_emma <- tidy_austen |>
-  filter(book == "Emma") #filter for words only in the book "Emma"
+  filter(book == "Emma") #filter for words only in th# NRC joy sentiment analysis 
+nrc_joy_words <- tidy_emma |>
+  inner_join(get_sentiments("nrc") |> filter(sentiment == "joy"), by = "word")
+
+nrc_counts <- nrc_joy_words |>
+  count(word, sort = TRUE) |>
+  filter(n > 50)
+
+# NRC bar chart 
+nrc_bar <- ggplot(nrc_counts, aes(x = reorder(word, n), y = n)) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Most Frequent Positive Words in Emma (NRC)",
+    x = "Word",
+    y = "Frequency")
+
+# NRC wordcloud
+wordcloud(
+  words = nrc_counts$word,
+  freq = nrc_counts$n)e book "Emma"
+
