@@ -20,3 +20,15 @@ jane_austen <- austen_books() |>
   ungroup() |>
   select(book, chapter, linenumber, text)
 head(jane_austen)
+
+# convert to tidy text
+tidy_austen <- jane_austen |>
+  unnest_tokens(word, text) |> 
+  mutate(word = str_extract(word, "[a-z']+")) |>
+  anti_join(stop_words, by = "word")
+
+tidy_austen |>
+  count(word, sort = TRUE)
+
+tidy_emma <- tidy_austen |>
+  filter(book == "Emma") #filter for words only in the book "Emma"
